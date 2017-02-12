@@ -30,6 +30,9 @@ func ptsname(fd int) (name string, err error) {
 	return "", errors.New("TIOCPTYGNAME string doesn't NULL-terminated")
 }
 
+// TODO: Now, tcsetattr runs with TCSAFLUSH
+// I wanna impl TCSANOW, TCSADRAIN
+// but sysall.TCSANOW/TCSADRAIN constant vars ain't implemented...?
 func tcsetattr(fd int, termios *syscall.Termios) (err error) {
 	return ioctl(fd, syscall.TIOCSETAF, uintptr(unsafe.Pointer(termios)))
 }

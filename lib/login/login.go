@@ -28,7 +28,6 @@ func Openpty(term syscall.Termios, win Winsize) (master_fd int, slave_fd int, er
 		return -1, -1, err
 	}
 
-	// tcsetattr(slave_fd, syscall.TCSAFLUSH, uintptr(unsafe.Pointer(&term)))
 	tcsetattr(slave_fd, &term)
 
 	ioctl(slave_fd, syscall.TIOCSWINSZ, uintptr(unsafe.Pointer(&win)))
