@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"syscall"
 	"unsafe"
 
@@ -16,7 +17,7 @@ func main() {
 
 	switch pid {
 	case 0:
-		syscall.Exec("/bin/bash", []string{""}, []string{""})
+		syscall.Exec("/bin/bash", []string{""}, os.Environ())
 	default:
 		new_term, _ := login.Tcgetattr(syscall.Stdin)
 		login.Cfmakeraw(new_term)
