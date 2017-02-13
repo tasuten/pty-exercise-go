@@ -45,4 +45,6 @@ func main() {
 		}
 	}
 
+	defer login.Tcsetattr(syscall.Stdin, original_term)
+
 }
