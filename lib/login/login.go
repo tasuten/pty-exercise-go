@@ -28,9 +28,9 @@ func Openpty(term syscall.Termios, win Winsize) (master_fd int, slave_fd int, er
 		return -1, -1, err
 	}
 
-	tcsetattr(slave_fd, &term)
+	Tcsetattr(slave_fd, &term)
 
-	ioctl(slave_fd, syscall.TIOCSWINSZ, uintptr(unsafe.Pointer(&win)))
+	Ioctl(slave_fd, syscall.TIOCSWINSZ, uintptr(unsafe.Pointer(&win)))
 	return master_fd, slave_fd, nil
 }
 
@@ -62,7 +62,7 @@ func Forkpty(term syscall.Termios, win Winsize) (pid int, master_fd int, err err
 
 func Login_tty(fd int) {
 	syscall.Setsid()
-	ioctl(fd, syscall.TIOCSCTTY, 0)
+	Ioctl(fd, syscall.TIOCSCTTY, 0)
 
 	syscall.Dup2(fd, syscall.Stdin)
 	syscall.Dup2(fd, syscall.Stdout)
@@ -81,7 +81,7 @@ func openpt() (fd int, err error) {
 	return fd, nil
 }
 
-func ioctl(fd int, command uint, ptr uintptr) (err error) {
+func Ioctl(fd int, command uint, ptr uintptr) (err error) {
 	_, _, err = syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), uintptr(command), ptr)
 	if err != nil && err.Error() != "errno 0" {
 		return err
@@ -89,7 +89,7 @@ func ioctl(fd int, command uint, ptr uintptr) (err error) {
 	return nil
 }
 
-func cfmakeraw(termios *syscall.Termios) {
+func Cfmakeraw(termios *syscall.Termios) {
 	termios.Iflag &^= (syscall.IGNBRK | syscall.BRKINT | syscall.PARMRK | syscall.ISTRIP | syscall.INLCR | syscall.IGNCR | syscall.ICRNL | syscall.IXON)
 	termios.Oflag &^= syscall.OPOST
 	termios.Lflag &^= (syscall.ECHO | syscall.ECHONL | syscall.ICANON | syscall.ISIG | syscall.IEXTEN)

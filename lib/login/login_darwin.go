@@ -8,16 +8,16 @@ import (
 )
 
 func unlockpt(fd int) (err error) {
-	return ioctl(fd, syscall.TIOCPTYUNLK, 0)
+	return Ioctl(fd, syscall.TIOCPTYUNLK, 0)
 }
 
 func grantpt(fd int) (err error) {
-	return ioctl(fd, syscall.TIOCPTYGRANT, 0)
+	return Ioctl(fd, syscall.TIOCPTYGRANT, 0)
 }
 
 func ptsname(fd int) (name string, err error) {
 	n := make([]byte, 128) // from apple libc
-	err = ioctl(fd, syscall.TIOCPTYGNAME, uintptr(unsafe.Pointer(&n[0])))
+	err = Ioctl(fd, syscall.TIOCPTYGNAME, uintptr(unsafe.Pointer(&n[0])))
 	if err != nil {
 		return "", err
 	}
@@ -33,13 +33,13 @@ func ptsname(fd int) (name string, err error) {
 // TODO: Now, tcsetattr runs with TCSAFLUSH
 // I wanna impl TCSANOW, TCSADRAIN
 // but sysall.TCSANOW/TCSADRAIN constant vars ain't implemented...?
-func tcsetattr(fd int, termios *syscall.Termios) (err error) {
-	return ioctl(fd, syscall.TIOCSETAF, uintptr(unsafe.Pointer(termios)))
+func Tcsetattr(fd int, termios *syscall.Termios) (err error) {
+	return Ioctl(fd, syscall.TIOCSETAF, uintptr(unsafe.Pointer(termios)))
 }
 
-func tcgetattr(fd int) (*syscall.Termios, error) {
+func Tcgetattr(fd int) (*syscall.Termios, error) {
 	var termios = &syscall.Termios{}
-	err := ioctl(fd, syscall.TIOCGETA, uintptr(unsafe.Pointer(termios)))
+	err := Ioctl(fd, syscall.TIOCGETA, uintptr(unsafe.Pointer(termios)))
 	if err != nil {
 		return termios, err
 	}

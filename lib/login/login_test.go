@@ -42,15 +42,15 @@ func TestTermios(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	termios1, err := tcgetattr(slave_fd)
+	termios1, err := Tcgetattr(slave_fd)
 	if err != nil {
 		t.Error(err)
 	}
-	err = tcsetattr(slave_fd, termios1)
+	err = Tcsetattr(slave_fd, termios1)
 	if err != nil {
 		t.Error(err)
 	}
-	termios2, err := tcgetattr(slave_fd)
+	termios2, err := Tcgetattr(slave_fd)
 	if err != nil {
 		t.Error(err)
 	}
