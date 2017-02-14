@@ -13,8 +13,23 @@ func TestWinsize(t *testing.T) {
 
 	err = winsize.SetWinsize(syscall.Stdout)
 	if err != nil {
-	  t.Errorf("Fail to set winsize: %v", err)
+		t.Errorf("Fail to set winsize: %v", err)
 	}
 
-	t.Log(winsize)
+	t.Logf("%#v", winsize)
+}
+
+func TestTermios(t *testing.T) {
+	termios, err := GetTermios(syscall.Stdout)
+	if err != nil {
+		t.Error("Fail to get termios: %v", err)
+	}
+
+	err = termios.SetTermios(syscall.Stdout)
+	if err != nil {
+		t.Error("Fail to set termios: %v", err)
+	}
+
+	t.Logf("%#v", termios)
+
 }

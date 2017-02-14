@@ -9,6 +9,16 @@ import (
 
 type Termios syscall.Termios
 
+func GetTermios(fd int) (termios Termios, err error) {
+	ptr, err := pty_low.Tcgetattr(fd)
+	return Termios(*ptr), err
+}
+
+func (self Termios) SetTermios(fd int) (err error) {
+	syster := syscall.Termios(self)
+	return pty_low.Tcsetattr(fd, &syster)
+}
+
 type Winsize pty_low.Winsize
 
 func GetWinsize(fd int) (winsize Winsize, err error) {
