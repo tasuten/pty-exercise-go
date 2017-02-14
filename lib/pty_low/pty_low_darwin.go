@@ -1,5 +1,6 @@
 // +build darwin
-package login
+
+package pty_low
 
 import (
 	"errors"
