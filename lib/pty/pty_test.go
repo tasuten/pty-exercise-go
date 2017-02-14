@@ -8,12 +8,12 @@ import (
 func TestWinsize(t *testing.T) {
 	winsize, err := GetWinsize(syscall.Stdout)
 	if err != nil {
-		t.Errorf("Fail to get winsize: %v", err)
+		t.Errorf(err)
 	}
 
 	err = winsize.SetWinsize(syscall.Stdout)
 	if err != nil {
-		t.Errorf("Fail to set winsize: %v", err)
+		t.Errorf(err)
 	}
 
 	t.Logf("%#v", winsize)
@@ -22,12 +22,12 @@ func TestWinsize(t *testing.T) {
 func TestTermios(t *testing.T) {
 	termios, err := GetTermios(syscall.Stdout)
 	if err != nil {
-		t.Error("Fail to get termios: %v", err)
+		t.Error(err)
 	}
 
 	err = termios.SetTermios(syscall.Stdout)
 	if err != nil {
-		t.Error("Fail to set termios: %v", err)
+		t.Error(err)
 	}
 
 	t.Logf("%#v", termios)
@@ -38,7 +38,7 @@ func TestForkpty(t *testing.T) {
 	termios, _ := GetTermios(syscall.Stdout)
 	pid, _, err := Forkpty(termios, winsize)
 	if err != nil {
-		t.Error("Forkpty fail: %v", err)
+		t.Error(err)
 	}
 
 	switch pid {
