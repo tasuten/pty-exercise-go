@@ -33,3 +33,18 @@ func TestTermios(t *testing.T) {
 	t.Logf("%#v", termios)
 }
 
+func TestForkpty(t *testing.T) {
+	winsize, _ := GetWinsize(syscall.Stdout)
+	termios, _ := GetTermios(syscall.Stdout)
+	pid, _, err := Forkpty(termios, winsize)
+	if err != nil {
+		t.Error("Forkpty fail: %v", err)
+	}
+
+	switch pid {
+	case 0:
+		syscall.Exit(0)
+	default:
+		t.Logf("Parent %v Child %v", syscall.Getpid(), pid)
+	}
+}
