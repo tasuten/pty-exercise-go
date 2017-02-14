@@ -31,5 +31,5 @@ func TestTermios(t *testing.T) {
 	}
 
 	t.Logf("%#v", termios)
-
 }
+

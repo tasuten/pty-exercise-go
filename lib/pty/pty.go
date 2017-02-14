@@ -19,6 +19,12 @@ func (self Termios) SetTermios(fd int) (err error) {
 	return pty_low.Tcsetattr(fd, &syster)
 }
 
+func (self Termios) Rawmode() Termios {
+	var rawterm = syscall.Termios(self)
+	pty_low.Cfmakeraw(&rawterm)
+	return Termios(rawterm)
+}
+
 type Winsize pty_low.Winsize
 
 func GetWinsize(fd int) (winsize Winsize, err error) {
