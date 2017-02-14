@@ -5,7 +5,7 @@ import (
 	"unsafe"
 )
 
-func Openpty(term syscall.Termios, win Winsize) (master_fd int, slave_fd int, err error) {
+func openpty(term syscall.Termios, win Winsize) (master_fd int, slave_fd int, err error) {
 	master_fd, err = openpt()
 	if err != nil {
 		return -1, -1, err
@@ -35,7 +35,7 @@ func Openpty(term syscall.Termios, win Winsize) (master_fd int, slave_fd int, er
 }
 
 func Forkpty(term syscall.Termios, win Winsize) (pid int, master_fd int, err error) {
-	master_fd, slave_fd, err := Openpty(term, win)
+	master_fd, slave_fd, err := openpty(term, win)
 	if err != nil {
 		return -1, -1, err
 	}
@@ -50,7 +50,7 @@ func Forkpty(term syscall.Termios, win Winsize) (pid int, master_fd int, err err
 	case 0:
 		// child
 		syscall.Close(master_fd)
-		Login_tty(slave_fd)
+		login_tty(slave_fd)
 		return 0, -1, nil
 	default:
 		// parent
@@ -60,7 +60,7 @@ func Forkpty(term syscall.Termios, win Winsize) (pid int, master_fd int, err err
 
 }
 
-func Login_tty(fd int) {
+func login_tty(fd int) {
 	syscall.Setsid()
 	Ioctl(fd, syscall.TIOCSCTTY, 0)
 
