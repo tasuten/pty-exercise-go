@@ -17,7 +17,11 @@ func main() {
 	case 0:
 		syscall.Exec("/bin/bash", []string{""}, os.Environ())
 	default:
-		original_term.Rawmode().SetTermios(syscall.Stdin)
+		var newterm = original_term.Rawmode()
+		newterm.Cc[syscall.VTIME] = 0
+		newterm.Cc[syscall.VMIN] = 1
+
+		newterm.SetTermios(syscall.Stdin)
 		go func() {
 			var buf = make([]byte, 256)
 
