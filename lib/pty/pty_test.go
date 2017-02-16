@@ -8,12 +8,12 @@ import (
 func TestWinsize(t *testing.T) {
 	winsize, err := GetWinsize(syscall.Stdout)
 	if err != nil {
-		t.Errorf(err)
+		t.Error(err)
 	}
 
 	err = winsize.SetWinsize(syscall.Stdout)
 	if err != nil {
-		t.Errorf(err)
+		t.Error(err)
 	}
 
 	t.Logf("%#v", winsize)
