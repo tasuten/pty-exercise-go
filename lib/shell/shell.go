@@ -1,6 +1,7 @@
 package shell
 
 import (
+	"errors"
 	"os"
 	"syscall"
 
@@ -9,6 +10,11 @@ import (
 
 type Shell struct {
 	Master_fd int
+}
+
+type ReadData struct {
+	Data []byte
+	Fd   int
 }
 
 func Spawn(t pty.Termios, w pty.Winsize) (Shell, error) {
@@ -33,4 +39,35 @@ func Spawn(t pty.Termios, w pty.Winsize) (Shell, error) {
 	}
 
 	return result, nil
+}
+
+func (self Shell) Read(buf *[]byte) (ReadData, error) {
+	result := ReadData{}
+	n_read, err := syscall.Read(self.Master_fd, *buf)
+	if err != nil {
+		return result, err
+	}
+
+	if n_read <= 0 {
+		return result, errors.New("Read error")
+	}
+
+	result.Fd = self.Master_fd
+	result.Data = (*buf)[:n_read]
+
+	return result, nil
+}
+
+func (self Shell) Write(data []byte) (err error) {
+	n_write, err := syscall.Write(self.Master_fd, data)
+
+	if err != nil {
+		return err
+	}
+
+	if n_write != len(data) {
+		return errors.New("Write error")
+	}
+
+	return nil
 }

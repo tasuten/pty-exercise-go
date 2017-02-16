@@ -21,18 +21,18 @@ func main() {
 			if nin <= 0 {
 				break
 			}
-			syscall.Write(s.Master_fd, buf[:nin])
+			s.Write(buf[:nin])
 		}
 	}()
 
 	var buf = make([]byte, 256)
 
 	for {
-		nin, _ := syscall.Read(s.Master_fd, buf)
-		if nin <= 0 {
+		data, err := s.Read(&buf)
+		if err != nil {
 			break
 		}
-		syscall.Write(syscall.Stdout, buf[:nin])
+		syscall.Write(syscall.Stdout, data.Data)
 	}
 
 	defer original_term.SetTermios(syscall.Stdin)
