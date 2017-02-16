@@ -95,8 +95,6 @@ func Cfmakeraw(termios *syscall.Termios) {
 	termios.Lflag &^= (syscall.ECHO | syscall.ECHONL | syscall.ICANON | syscall.ISIG | syscall.IEXTEN)
 	termios.Cflag &^= (syscall.CSIZE | syscall.PARENB)
 	termios.Cflag |= syscall.CS8
-	termios.Cc[syscall.VMIN] = 1
-	termios.Cc[syscall.VTIME] = 0
 }
 
 type Winsize struct {
