@@ -33,7 +33,7 @@ func Spawn(t pty.Termios, w pty.Winsize) (Shell, error) {
 		// うまくproxyとかに分離できないか
 		var new_t = t.Rawmode()
 		new_t.Cc[syscall.VTIME] = 0
-		new_t.Cc[syscall.VMIN] = 1
+		new_t.Cc[syscall.VMIN] = 0
 		new_t.SetTermios(syscall.Stdin)
 		result.Master_fd = master_fd
 	}

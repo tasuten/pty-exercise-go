@@ -18,8 +18,11 @@ func main() {
 
 		for {
 			nin, _ := syscall.Read(syscall.Stdin, buf)
-			if nin <= 0 {
+			if nin < 0 {
 				break
+			}
+			if nin == 0 {
+			  continue
 			}
 			s.Write(buf[:nin])
 		}
