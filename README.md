@@ -9,3 +9,7 @@ so I leave this.
 
 `go run sample.go`, and spawn a bash in other process.
 
+TODO:
+
+- This code supports only darwin, does not support linux, bsd, ...
+- `lib/pty/pty_test.go` will fail when the test process does not connected stdio
